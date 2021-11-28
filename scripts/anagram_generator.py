@@ -69,13 +69,18 @@ def main():
     get_words = os.popen(command_string).read().split("\n")
     
     for word in get_words:
-        
+        #TODO: eliminate occureces of the same letter 
         if has_numbers(word) != True and len(word) > 2: 
+            random_letter_string = ''.join(rand_letters)            
+            for letter in word: 
+                if word.count(letter) >= random_letter_string.count(letter):
+                    word_list.append(word)
 
-            #add to the word list to be returned 
-            print("word : " +  word)
-            word_list.append(word)
-    print(word_list)             
+
+
+
+    return list(set(word_list)) #remove duplicates
+    print(list(set(word_list)))
 
 def has_numbers(inputString):
      return any(char.isdigit() for char in inputString)
