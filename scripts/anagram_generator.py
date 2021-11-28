@@ -41,47 +41,46 @@ def main():
     arguments = sys.argv[1:]
 
     file_data = ''
-
-    with open('words_alpha.txt') as f:
+    
+    with open(os.path.dirname(__file__) + '/../words.txt') as f:
         file_data = f.read()
-        print(file_data.split('\n'))
 
     #TODO: add argument flags for changing the ammount of letters and other restrictions
     #generate 6 random letters by default
 
     rand_letters = []
 
-    with open('../alphabet.txt') as a:
-        alphabet = a.read().split(' ')
-        #TODO: add flag for enabling multiple occurences of letters 
-         
-        for x in range(0, 5):
-            rand_letters.append(alphabet[randint(0, len(alphabet) - 1)])
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
-        #make sure word doesnt have any numbers in it
+    #TODO: add flag for enabling multiple occurences of letters 
+     
+    for x in range(0, 5):
+        rand_letters.append(alphabet[randint(0, len(alphabet) - 1)])
+
+    #make sure word doesnt have any numbers in it
         
-        try:
-            #find word with the given letters : LINUX ONLY
-            pattern = '|'.join(rand_letters)
+    #find word with the given letters : LINUX ONLY
+    pattern = ''.join(rand_letters)
 
-            get_words = os.system("grep -E --quiet '{}' words.txt").format(pattern)
-            
-            for word in get_words:
-                
-                if has_numbers(word) != True:
+    command_string = "grep -v '[^{}]' words.txt".format(pattern)
+    print("command string : " + command_string)
+    print("random letters: " + ''.join(rand_letters))
 
-                    #add to the word list to be returned 
-                    word_list.append(word)
-                     
-        except Exception as e:
-            print(e)
+    get_words = os.popen(command_string).read().split("\n")
+    
+    for word in get_words:
+        
+        if has_numbers(word) != True and len(word) > 2: 
 
-    return word_list    
+            #add to the word list to be returned 
+            print("word : " +  word)
+            word_list.append(word)
+    print(word_list)             
 
 def has_numbers(inputString):
      return any(char.isdigit() for char in inputString)
 
 if __name__ == '__main__':
 
-    main()
-
+   main()
+    
