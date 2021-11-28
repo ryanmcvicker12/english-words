@@ -27,6 +27,7 @@ from pathlib import Path
 from random import randint
 import os 
 import sys
+import argparse
 
 #TODO: add support for changing the output file where the words go
 
@@ -34,6 +35,21 @@ import sys
 #TODO: add support for windows and macos, currently only works on linux
 # 1st command line argument dictates how many characters the word can be 
 #TODO: add command line argument to change exactly how many words are generated.
+
+
+
+parser.add_argument('-l','--letters'  help='set the ammount of random letters to be generated.',type=int)
+
+parser.add_argument('integers', metavar='N', type=int, nargs='+', 
+                    help='an integer for the accumulator')
+
+
+
+
+
+args = parser.parse()
+print(args) 
+
 def main():
     
     word_list = []
@@ -44,7 +60,6 @@ def main():
     
     with open(os.path.dirname(__file__) + '/../words.txt') as f:
         file_data = f.read()
-
     #TODO: add argument flags for changing the ammount of letters and other restrictions
     #generate 6 random letters by default
 
@@ -53,10 +68,19 @@ def main():
     alphabet = 'abcdefghijklmnopqrstuvwxyz'
 
     #TODO: add flag for enabling multiple occurences of letters 
-     
-    for x in range(0, 5):
-        rand_letters.append(alphabet[randint(0, len(alphabet) - 1)])
 
+    #================== | COMMAND LINE HANDLING | =====================================
+    
+    if args.letters:
+        for x in args[args.index("-n") + 1]:
+            rand_letters.append(alphabet[randint(0, len(alphabet) - 1)])
+
+    if args.output:
+        #TODO: change the output where to go, could be filename for --output and -o
+        print(f'Output was moved to {args.output}')
+
+        
+    #==================================================================================
     #make sure word doesnt have any numbers in it
         
     #find word with the given letters : LINUX ONLY
@@ -75,6 +99,7 @@ def main():
             for letter in word: 
                 if word.count(letter) >= random_letter_string.count(letter):
                     word_list.append(word)
+
 
 
 
