@@ -38,16 +38,16 @@ import argparse
 
 
 
-parser.add_argument('-l','--letters'  help='set the ammount of random letters to be generated.',type=int)
+parser = argparse.ArgumentParser()
 
-parser.add_argument('integers', metavar='N', type=int, nargs='+', 
-                    help='an integer for the accumulator')
+parser.add_argument('-l','--letters', type = int, help='set the ammount of random letters to be generated.')
 
-
-
+parser.add_argument('-n', '--accumulator' ,  type=str, nargs='+', help='an integer for the accumulator', required = False) 
 
 
-args = parser.parse()
+
+
+args = parser.parse_args()
 print(args) 
 
 def main():
@@ -58,8 +58,6 @@ def main():
 
     file_data = ''
     
-    with open(os.path.dirname(__file__) + '/../words.txt') as f:
-        file_data = f.read()
     #TODO: add argument flags for changing the ammount of letters and other restrictions
     #generate 6 random letters by default
 
@@ -71,24 +69,15 @@ def main():
 
     #================== | COMMAND LINE HANDLING | =====================================
     
+    #if the user wants to change the letters used for generation
     if args.letters:
-        for x in args[args.index("-n") + 1]:
-            rand_letters.append(alphabet[randint(0, len(alphabet) - 1)])
 
-    if args.output:
-        #TODO: change the output where to go, could be filename for --output and -o
-        print(f'Output was moved to {args.output}')
-
+            print( args.letters)
         
     #==================================================================================
     #make sure word doesnt have any numbers in it
         
-    #find word with the given letters : LINUX ONLY
     pattern = ''.join(rand_letters)
-
-    command_string = "grep -v '[^{}]' words.txt".format(pattern)
-    print("command string : " + command_string)
-    print("random letters: " + ''.join(rand_letters))
 
     get_words = os.popen(command_string).read().split("\n")
     
